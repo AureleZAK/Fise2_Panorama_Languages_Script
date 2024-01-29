@@ -16,8 +16,9 @@
             <form id="joinForm" action="/chat.html">
                 <label for="">Name</label>
                 <input type="text" name="username" placeholder="Display name" required>
-                <label for="">Room</label>
-                <input type="text" name="room" placeholder="Room" required>
+                
+                <option value="room">Room</option>
+                <input id="room" type="text" name="room" placeholder="Room" required>
 
                 <label for="avatar">Choose an Avatar:</label>
                 <div class="avatar-options" id="avatar">
@@ -111,17 +112,37 @@
                     <img id="avatarPreview" src="img/avatar.jpg" alt="Avatar Preview"
                         style="width:100px; height:100px;" />
                 </div>
+                
                 <script>
                     function updatePreview(radioInput) {
                         var avatarPath = radioInput.value;
                         document.getElementById('avatarPreview').src = 'img/' + avatarPath;
                         document.getElementById('avatarUrl').value = 'img/' + avatarPath;
                         console.log(document.getElementById('avatarUrl').value);
-                    }    
+                    } 
                 </script>
                 <button>Join</button>
             </form>
         </div>
+    </div>
+    <div class="left_box">
+        <h1>Users online</h1>
+        <ul id="users-list">
+        <ul>
+            <script src="/socket.io/socket.io.js"></script>
+        <script>
+        const socket = io();
+
+        socket.on('userList', (users) => {
+            const usersList = document.getElementById('users-list');
+            usersList.innerHTML = ''; // Nettoyer la liste actuelle
+            users.forEach(user => {
+                const userElement = document.createElement('li');
+                userElement.textContent = user.username;
+                usersList.appendChild(userElement);
+            });
+        });
+        </script>
     </div>
 </body>
 
