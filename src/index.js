@@ -19,6 +19,8 @@ app.use(express.static(publicPathDir))
 // Connection d'un utilisateur
 io.on('connection', (socket) => {
 
+    
+
     socket.emit('userList', getAllUsers());
 
     socket.on('join', (options, callback) => {

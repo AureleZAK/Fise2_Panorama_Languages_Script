@@ -54,10 +54,16 @@ const getAllUsers = () =>
     return users;
 }
 
+const getUserByUsername = (username) => {
+    username = username.trim().toLowerCase();
+    return users.find(user => user.username === username);
+};
+
 module.exports = {
     addUser,
     removeUser,
     getUser,
     getUsersInRoom,
-    getAllUsers
+    getAllUsers,
+    getUserByUsername 
 }

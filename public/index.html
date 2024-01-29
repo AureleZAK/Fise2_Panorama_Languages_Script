@@ -16,10 +16,8 @@
             <form id="joinForm" action="/chat.html">
                 <label for="">Name</label>
                 <input type="text" name="username" placeholder="Display name" required>
-                <select id="chat-option" onchange="changePlaceholder()">
-                    <option value="room">Room</option>
-                    <option value="privateMessage">Private message</option>
-                </select>
+                
+                <option value="room">Room</option>
                 <input id="room" type="text" name="room" placeholder="Room" required>
 
                 <label for="avatar">Choose an Avatar:</label>
@@ -122,19 +120,6 @@
                         document.getElementById('avatarUrl').value = 'img/' + avatarPath;
                         console.log(document.getElementById('avatarUrl').value);
                     } 
-                    
-                    function changePlaceholder() {
-                        var chatOption = document.getElementById("chat-option").value;
-                        console.log("chatOption")
-                        var roomInput = document.getElementById("room");
-                        if(chatOption === "privateMessage") {
-                            roomInput.placeholder = "User";
-                        } else {
-                            roomInput.placeholder = "Room";
-                        }
-                    }
-                    
-                    
                 </script>
                 <button>Join</button>
             </form>
@@ -147,6 +132,7 @@
             <script src="/socket.io/socket.io.js"></script>
         <script>
         const socket = io();
+
         socket.on('userList', (users) => {
             const usersList = document.getElementById('users-list');
             usersList.innerHTML = ''; // Nettoyer la liste actuelle
