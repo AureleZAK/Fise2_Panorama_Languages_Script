@@ -19,7 +19,7 @@ app.use(express.static(publicPathDir))
 // Connection d'un utilisateur
 io.on('connection', (socket) => {
 
-    
+
 
     socket.emit('userList', getAllUsers());
 
@@ -88,7 +88,9 @@ io.on('connection', (socket) => {
 
     })
 })
-io.on('disconnect', (socket) =>{
+
+// Affichage des utilisateurs
+io.on('disconnect', (socket) => {
     socket.emit('userList', getAllUsers());
 })
 

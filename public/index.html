@@ -16,7 +16,7 @@
             <form id="joinForm" action="/chat.html">
                 <label for="">Name</label>
                 <input type="text" name="username" placeholder="Display name" required>
-                
+
                 <option value="room">Room</option>
                 <input id="room" type="text" name="room" placeholder="Room" required>
 
@@ -74,45 +74,11 @@
                     </label>
                     <input type="hidden" name="avatarUrl" id="avatarUrl" value="img/avatar1.png">
                 </div>
-                <style>
-                    .avatar-options {
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: space-around;
-                        /* ou space-between, selon le style souhaité */
-                    }
-
-                    .avatar-options label {
-                        cursor: pointer;
-                        width: 18%;
-                        /* Ajustez cette valeur en fonction de la taille du conteneur et de l'espacement désiré */
-                        margin-bottom: 10px;
-                        /* Espace entre les lignes d'avatars */
-                    }
-
-                    .avatar-options label img {
-                        width: 100%;
-                        /* Permet aux images de s'adapter à la largeur du label */
-                        height: auto;
-                        /* Garde le ratio d'aspect des images */
-                        border: 2px solid transparent;
-                    }
-
-                    .preview-container {
-                        display: flex;
-                        justify-content: center;
-                        /* Centre horizontalement */
-                        align-items: center;
-                        /* Centre verticalement */
-                        height: 150px;
-                        /* Hauteur du conteneur, ajustez selon vos besoins */
-                    }
-                </style>
                 <div class="preview-container">
                     <img id="avatarPreview" src="img/avatar.jpg" alt="Avatar Preview"
                         style="width:100px; height:100px;" />
                 </div>
-                
+
                 <script>
                     function updatePreview(radioInput) {
                         var avatarPath = radioInput.value;
@@ -128,21 +94,21 @@
     <div class="left_box">
         <h1>Users online</h1>
         <ul id="users-list">
-        <ul>
-            <script src="/socket.io/socket.io.js"></script>
-        <script>
-        const socket = io();
+            <ul>
+                <script src="/socket.io/socket.io.js"></script>
+                <script>
+                    const socket = io();
 
-        socket.on('userList', (users) => {
-            const usersList = document.getElementById('users-list');
-            usersList.innerHTML = ''; // Nettoyer la liste actuelle
-            users.forEach(user => {
-                const userElement = document.createElement('li');
-                userElement.textContent = user.username;
-                usersList.appendChild(userElement);
-            });
-        });
-        </script>
+                    socket.on('userList', (users) => {
+                        const usersList = document.getElementById('users-list');
+                        usersList.innerHTML = ''; // Nettoyer la liste actuelle
+                        users.forEach(user => {
+                            const userElement = document.createElement('li');
+                            userElement.textContent = user.username;
+                            usersList.appendChild(userElement);
+                        });
+                    });
+                </script>
     </div>
 </body>
 
