@@ -4,7 +4,7 @@ const express = require('express')
 const socketio = require('socket.io')
 const Filter = require('bad-words')
 const { messageGenerator } = require('./utils/messages')
-const { addUser, removeUser, getUser, getUsersInRoom } = require('./utils/users')
+const { addUser, removeUser, getUser, getUsersInRoom, getAllUsers } = require('./utils/users')
 
 const app = express()
 const server = http.createServer(app)
@@ -18,6 +18,9 @@ app.use(express.static(publicPathDir))
 
 // Connection d'un utilisateur
 io.on('connection', (socket) => {
+
+    socket.emit('userList', getAllUsers());
+
     socket.on('join', (options, callback) => {
 
         console.log(options)
@@ -27,6 +30,7 @@ io.on('connection', (socket) => {
             return callback(error)
         }
 
+        io.emit('userList', getAllUsers());
         // Rejoindre une room
         socket.join(user.room)
 
@@ -77,8 +81,13 @@ io.on('connection', (socket) => {
                 room: user.room,
                 users: getUsersInRoom(user.room)
             })
+            io.emit('userList', getAllUsers());
         }
+
     })
+})
+io.on('disconnect', (socket) =>{
+    socket.emit('userList', getAllUsers());
 })
 
 server.listen(port, () => {
