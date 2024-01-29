@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link rel="icon" href="./img/favicon.png">
+    <link rel="stylesheet" href="./css/styles.min.css">
+</head>
+
+<body>
+    <div class="centered-form">
+        <div class="centered-form__box">
+            <h1>Join Room</h1>
+            <form id="joinForm" action="/chat.html">
+                <label for="">Name</label>
+                <input type="text" name="username" placeholder="Display name" required>
+                <label for="">Room</label>
+                <input type="text" name="room" placeholder="Room" required>
+
+                <label for="avatar">Choose an Avatar:</label>
+                <div class="avatar-options" id="avatar">
+                    <label>
+                        <input type="radio" name="avatar" value="avatar.jpg" onchange="updatePreview(this)"
+                            style="display:none" />
+                        <img src="img/avatar.jpg" alt="Avatar 1" style="width:20px; height:20px;" />
+                    </label>
+                    <label>
+                        <input type="radio" name="avatar" value="avatar1.jpg" onchange="updatePreview(this)"
+                            style="display:none" />
+                        <img src="img/avatar1.jpg" alt="Avatar 2" style="width:20px; height:20px;" />
+                    </label>
+                    <label>
+                        <input type="radio" name="avatar" value="avatar2.jpg" onchange="updatePreview(this)"
+                            style="display:none" />
+                        <img src="img/avatar2.jpg" alt="Avatar 3" style="width:20px; height:20px;" />
+                    </label>
+                    <label>
+                        <input type="radio" name="avatar" value="avatar3.jpg" onchange="updatePreview(this)"
+                            style="display:none" />
+                        <img src="img/avatar3.jpg" alt="Avatar 4" style="width:20px; height:20px;" />
+                    </label>
+                    <label>
+                        <input type="radio" name="avatar" value="avatar4.jpg" onchange="updatePreview(this)"
+                            style="display:none" />
+                        <img src="img/avatar4.jpg" alt="Avatar 5" style="width:20px; height:20px;" />
+                    </label>
+                    <label>
+                        <input type="radio" name="avatar" value="avatar5.jpg" onchange="updatePreview(this)"
+                            style="display:none" />
+                        <img src="img/avatar5.jpg" alt="Avatar 6" style="width:20px; height:20px;" />
+                    </label>
+                    <label>
+                        <input type="radio" name="avatar" value="avatar6.jpg" onchange="updatePreview(this)"
+                            style="display:none" />
+                        <img src="img/avatar6.jpg" alt="Avatar 7" style="width:20px; height:20px;" />
+                    </label>
+                    <label>
+                        <input type="radio" name="avatar" value="avatar7.jpg" onchange="updatePreview(this)"
+                            style="display:none" />
+                        <img src="img/avatar7.jpg" alt="Avatar 8" style="width:20px; height:20px;" />
+                    </label>
+                    <label>
+                        <input type="radio" name="avatar" value="avatar8.jpg" onchange="updatePreview(this)"
+                            style="display:none" />
+                        <img src="img/avatar8.jpg" alt="Avatar 9" style="width:20px; height:20px;" />
+                    </label>
+                    <label>
+                        <input type="radio" name="avatar" value="avatar9.jpg" onchange="updatePreview(this)"
+                            style="display:none" />
+                        <img src="img/avatar9.jpg" alt="Avatar 10" style="width:20px; height:20px;" />
+                    </label>
+                    <input type="hidden" name="avatarUrl" id="avatarUrl" value="img/avatar1.png">
+                </div>
+                <style>
+                    .avatar-options {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: space-around;
+                        /* ou space-between, selon le style souhaité */
+                    }
+
+                    .avatar-options label {
+                        cursor: pointer;
+                        width: 18%;
+                        /* Ajustez cette valeur en fonction de la taille du conteneur et de l'espacement désiré */
+                        margin-bottom: 10px;
+                        /* Espace entre les lignes d'avatars */
+                    }
+
+                    .avatar-options label img {
+                        width: 100%;
+                        /* Permet aux images de s'adapter à la largeur du label */
+                        height: auto;
+                        /* Garde le ratio d'aspect des images */
+                        border: 2px solid transparent;
+                    }
+
+                    .preview-container {
+                        display: flex;
+                        justify-content: center;
+                        /* Centre horizontalement */
+                        align-items: center;
+                        /* Centre verticalement */
+                        height: 150px;
+                        /* Hauteur du conteneur, ajustez selon vos besoins */
+                    }
+                </style>
+                <div class="preview-container">
+                    <img id="avatarPreview" src="img/avatar.jpg" alt="Avatar Preview"
+                        style="width:100px; height:100px;" />
+                </div>
+                <script>
+                    function updatePreview(radioInput) {
+                        var avatarPath = radioInput.value;
+                        document.getElementById('avatarPreview').src = 'img/' + avatarPath;
+                        document.getElementById('avatarUrl').value = 'img/' + avatarPath;
+                        console.log(document.getElementById('avatarUrl').value);
+                    }    
+                </script>
+                <button>Join</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

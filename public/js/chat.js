@@ -1,0 +1,136 @@
+const socket = io()
+var user
+var typing = false;
+var timeout = undefined;
+
+// Elements for Message Form
+const $messageForm = document.querySelector('#message-form')
+const $messageInput = $messageForm.querySelector('input')
+const $messageFormButton = $messageForm.querySelector('button')
+// Elemenrs for Geo-Location 
+const $geoLocation = document.querySelector('#send-location')
+const $messages = document.querySelector('#messages')
+
+// Elements for templates
+const renderMessage = document.querySelector('#render-message-template').innerHTML
+const renderSiderbar = document.querySelector('#sidebar-template').innerHTML
+
+// Options
+const { username, room, avatarUrl } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+
+// AutoScroll
+
+const autoScroll = () => {
+    //Getting new Message Element
+    const $newElement = $messages.lastElementChild
+
+    //Height of the new Message
+    const newMessageStyle = getComputedStyle($newElement)
+    const newMessageMargin = parseInt(newMessageStyle.marginBottom)
+    const newMessageHeight = $newElement.offsetHeight + newMessageMargin
+
+    // Visible Height of conatiner
+    const visibleHeight = $messages.offsetHeight
+
+    // Height of Messages Container
+    const containerHeight = $messages.scrollHeight
+    // How far i have scrolled
+    const scrollOffSet = $messages.scrollTop + visibleHeight
+
+    if (containerHeight - newMessageHeight <= scrollOffSet) {
+        $messages.scrollTop = $messages.scrollHeight
+    }
+
+}
+
+
+socket.on('message', (message) => {
+    const html = Mustache.render(renderMessage, {
+        username: message.username,
+        message: message.text,
+        createdAt: moment(message.createdAt).format('h:mm a')
+    })
+
+    $messages.insertAdjacentHTML('beforeend', html)
+    autoScroll()
+})
+
+
+socket.on('LocationMessage', (url) => {
+    const html = Mustache.render(renderLocation, {
+        username: url.username,
+        url: url.url,
+        createdAt: moment(url.createdAt).format('h:mm a')
+    })
+
+    $messages.insertAdjacentHTML('beforeend', html)
+    autoScroll()
+})
+
+socket.on('roomData', ({ room, users, avatarUrl }) => {
+    const html = Mustache.render(renderSiderbar, {
+        room,
+        users,
+        avatarUrl
+    })
+
+    document.querySelector('#sidebar').innerHTML = html
+})
+
+$messageForm.addEventListener('submit', (e) => {
+
+    $messageFormButton.setAttribute('disabled', 'disabled')
+
+    let message = e.target.elements.message.value
+    socket.emit('sendMessage', message, (error) => {
+        $messageFormButton.removeAttribute('disabled')
+        $messageInput.value = ''
+        $messageInput.focus()
+        if (error) {
+            return console.log(error)
+        }
+
+        console.log("Your Message is Devlivered!")
+    })
+    e.preventDefault()
+})
+
+socket.emit('join', { username, room, avatarUrl }, (error) => {
+    if (error) {
+        alert(error)
+        location.href = '/'
+    }
+})
+
+// For Typing notification in real time 
+
+$(document).ready(function () {
+    $('#message-box-check').keypress((e) => {
+        if (e.which != 13) {
+            typing = true
+            socket.emit('typing', { user: username, typing: true })
+            clearTimeout(timeout)
+            timeout = setTimeout(typingTimeout, 3000)
+        } else {
+            clearTimeout(timeout)
+            typingTimeout()
+            //sendMessage() function will be called once the user hits enter 
+
+        }
+    })
+
+    //code explained later
+    socket.on('display', (data) => {
+        if (data.typing == true)
+            $('.typing').text(`${data.user} is typing...`)
+        else
+            $('.typing').text("")
+    })
+})
+
+
+
+function typingTimeout() {
+    typing = false
+    socket.emit('typing', { user: user, typing: false })
+}
